@@ -36,9 +36,11 @@ def get_movie_search_list(name):
     if not content_tag:
         return []
     search_list = []
-    # 链接信息
-    for table_tag in content_tag.find_all(class_='info clear'):
+    # 电影详情信息
+    for table_tag in content_tag.find_all(class_='article'):
         a_tag = table_tag.find('a')
+        if not a_tag:
+            continue
         detail_url = a_tag.attrs.get('href', '')
         if detail_url:
             search_list.append(host + detail_url)
@@ -65,7 +67,7 @@ def get_movie_resource(movie_url):
         if 'd-bt' in class_list:
             continue
         resource = a_tag.attrs.get('href')
-        if resource:
+        if resource and not resource.endswith('.html'):
             resources.append(resource)
     return resources
 
